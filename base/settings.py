@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import whitenoise
+import django_heroku
 
 GOOGLE_RECAPTCHA_SECRET_KEY = '6Lc3b84UAAAAAFAxt3Fs_Szs5KpfY5bknFLRVR8c'
 RECAPTCHA_PUBLIC_KEY = '6Lc3b84UAAAAAIMmKoqMCJouBr2i5OuMgptFhDgp'
@@ -140,3 +141,6 @@ STATICFILES_DIRS = (
 )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
+INSTALLED_APPS = INSTALLED_APPS
+django_heroku.settings(locals())
