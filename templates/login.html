@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Álvaro de la Flor Bonilla</title>
+		<meta charset="utf-8" />
+        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+		<noscript><link rel="stylesheet" href="{% static 'assets/css/noscript.css' %}"/></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="/" class="logo">Volver</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="/">Inicio</a></li>
+							<li><a href="/cv">CV</a></li>
+							<li class="active"><a href="/login">Iniciar Sesión</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a target="_blank" href="https://twitter.com/alvar017/" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a target="_blank" href="https://www.facebook.com/alvarodelaflorbonilla/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a target="_blank" href="https://www.instagram.com/alvar017/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a target="_blank" href="https://github.com/alvar017/" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                            <li><a target="_blank" href="https://www.linkedin.com/in/%C3%A1lvaro-de-la-flor-bonilla-b56b5b144/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+                        <article class="post featured">
+                            <header class="major">
+                                <div class="wrapper">
+                                    <form method="POST" class="login">
+                                        {% csrf_token %}
+                                        <input type="text" id="id_username" name="username" placeholder="Nombre de usuario" autofocus/>
+                                        <input  style="margin-top: 1.5em" type="password" id="id_password" name="password" placeholder="Contraseña"/>
+                                        {% if form.errors %}
+                                            <p>Usuario o contraseña incorrectos</p>
+                                        {% endif %}
+                                        <button  style="margin-top: 1.5em">
+                                            <i class="spinner"></i>
+                                            <span class="state">Entrar</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </header>
+                        </article>
+					</div>
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>
+                            &copy; ÁLVARO<br><br>
+                            Designed by <a target="_blank"  href="https://www.linkedin.com/in/%C3%A1lvaro-de-la-flor-bonilla-b56b5b144/" >Álvaro de la Flor Bonilla</a>
+                        </li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'assets/js/jquery.min.js' %} "></script>
+			<script src="{% static 'assets/js/jquery.scrollex.min.js' %} "></script>
+			<script src="{% static 'assets/js/jquery.scrolly.min.js' %} "></script>
+			<script src="{% static 'assets/js/browser.min.js' %} "></script>
+			<script src="{% static 'assets/js/breakpoints.min.js' %} "></script>
+			<script src="{% static 'assets/js/util.js' %} "></script>
+			<script src="{% static 'assets/js/main.js' %} "></script>
+
+	</body>
+</html>
