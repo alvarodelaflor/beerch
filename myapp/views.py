@@ -49,6 +49,26 @@ def users(request):
 
     return render(request, 'users.html', { 'users': users })
 
+def users_filter(request):
+    data = request.POST['username']
+    if data != '':
+        user_list = User.objects.filter(name__icontains=data)
+    else:
+        user_list = User.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(user_list, 4)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    if data != '':
+        return render(request, 'users.html', { 'users': users, 'placeholder': data})    
+    else:
+        placeholder = 'Filtra por nombre de usuario'
+        return render(request, 'users.html', { 'users': users, 'placeholder': placeholder })    
 
 def reviews(request):
     reviews_list = Review.objects.all()
@@ -61,8 +81,8 @@ def reviews(request):
         reviews = paginator.page(1)
     except EmptyPage:
         reviews = paginator.page(paginator.num_pages)
-
-    return render(request, 'reviews.html', { 'reviews': reviews })
+        placeholder = 'Filtra por nombre de usuario'
+        return render(request, 'users.html', { 'users': users, 'placeholder': placeholder })    
 
 
 def my_custom_page_not_found_view(request, exception):
