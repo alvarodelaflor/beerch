@@ -108,34 +108,36 @@ def import_reviews_users():
             restaurant_name = line[6]
             user_name = line[0]
             
-            restaurant_id = find_db_restaurant(restaurant_name)
-            user_id = find_db_user(user_name)
+            restaurant_id = find_db_restaurant(restaurant_name)[0][0]
+            user_id = find_db_user(user_name)[0][0]
     
             reviews.append(Review(user_id=user_id,restaurant_id=restaurant_id, rate=rate,visit_date=visit_date, title=title, description=description))
             
         except:
             e = sys.exc_info()
             print("Error when creating a review or user: {0}".format(e))
-    Reviews.object.bulk_create(reviews)
+    Review.objects.bulk_create(reviews)
+
 
 def find_db_user(name):
     conn = lite.connect('db.sqlite3')
     conn.text_factory = str
     if name is not None:
         s = "%" + name + "%"
-        cursor = conn.execute("SELECT id FROM users WHERE NAME LIKE ?", (s,))        
+        cursor = conn.execute("SELECT id FROM myapp_user WHERE NAME LIKE ?", (s,))        
     res = []
     for row in cursor:
         res.append(row)
     conn.close()
     return res
 
+
 def find_db_restaurant(name):
-    conn = lite.connect('./db.sqlite3')
+    conn = lite.connect('db.sqlite3')
     conn.text_factory = str
     if name is not None:
         s = "%" + name + "%"
-        cursor = conn.execute("SELECT id FROM RESTAURANT WHERE name LIKE ?", (s,))        
+        cursor = conn.execute("SELECT id FROM myapp_restaurant WHERE name LIKE ?", (s,))        
     res = []
     for row in cursor:
         res.append(row)
