@@ -41,8 +41,8 @@
 									<div class="posts">
 										{% for user in users %}
 											<article>
-												<a href={{ user.2 }} class="image"><img src= {{ user.2 }} alt="" width="100%" height="100%"/></a>
-												<h3>{{user.1}}</h3>
+												<a href={{ user.photo }} class="image"><img src= {{ user.photo }} alt="" width="100%" height="100%"/></a>
+												<h3>{{user.name}}</h3>
 												<ul class="actions">
 													<li><a href="#" class="button">Más información</a></li>
 												</ul>
@@ -50,7 +50,35 @@
 										{% endfor %}
 									</div>
 								</section>
-									
+									<ul class="pagination">
+										<!-- PREVIOUS BOTTON-->
+										{% if users.has_previous %}
+											<li><a href="?page={{ users.previous_page_number }}" class="button">Prev</a></li>
+										{% else %}
+											<li><span class="button disabled">Prev</span></li>
+										{% endif %}
+										<!-- PREVIOUS BOTTON-->
+
+										<!-- NAV BUTTON-->
+										{% for i in users.paginator.page_range %}
+											{% if users.number != i %}
+											<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
+											{% else %}
+											<li><a href="#" class="page active">{{ i }}</a></li>
+											{% endif %}
+										{% endfor %}
+										<!-- NAV BUTTON-->
+
+
+										<!-- NEXT BOTTON-->
+										{% if users.has_next %}
+											<li><a href="?page={{ users.next_page_number }}" class="button">Next</a></li>
+										{% else %}
+											<li><span class="button disabled">Next</span></li>
+										{% endif %}
+										<!-- NEXT BOTTON-->
+									</ul>
+								</section>
 						</div>
 					</div>
 

@@ -41,26 +41,26 @@
 									<div class="posts">
 										{% for review in reviews %}
 											<article>
-												{% if 'https:' in review.1 %}
+												{% if 'https:' in review.restaurant.id %}
 													<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
 												{% else %}
 													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
 												{% endif %}
-												<h3>{{review.2.1}} sobre {{review.1.1}}</h3>
-												<p>{{review.0.3}}</p>
-												{% if review.0.1 == 0 %}
+												<h3>{{review.user.name}} sobre {{review.restaurant.name}}</h3>
+												{% if review.rate == 0 %}
 													<img class="image" src="/static/images/rating/star_0.png" alt="" width="40%" height="5%"/>													
-												{% elif review.0.1 == 1 %}
+												{% elif review.rate == 1 %}
 													<img class="image" src="/static/images/rating/star_1.png" alt="" width="40%" height="5%"/>													
-												{% elif review.0.1 == 2 %}
+												{% elif review.rate == 2 %}
 													<img class="image" src="/static/images/rating/star_2.png" alt="" width="40%" height="5%"/>													
-												{% elif review.0.1 == 3 %}
+												{% elif review.rate == 3 %}
 													<img class="image" src="/static/images/rating/star_3.png" alt="" width="40%" height="5%"/>													
-												{% elif review.0.1 == 4 %}
+												{% elif review.rate == 4 %}
 													<img src="/static/images/rating/star_4.png" alt="" width="40%" height="5%"/>													
-												{% elif review.0.1 == 5 %}
+												{% elif review.rate == 5 %}
 													<img class="image" class="image" src="/static/images/rating/star_5.png" alt="" width="40%" height="5%"/>													
 												{% endif %}
+												<p>{{review.description}}</p>												
 												<ul class="actions">
 													<li><a href="#" class="button">Más información</a></li>
 												</ul>
@@ -68,7 +68,36 @@
 										{% endfor %}
 									</div>
 								</section>
-									
+								</section>
+									<ul class="pagination">
+										<!-- PREVIOUS BOTTON-->
+										{% if reviews.has_previous %}
+											<li><a href="?page={{ reviews.previous_page_number }}" class="button">Prev</a></li>
+										{% else %}
+											<li><span class="button disabled">Prev</span></li>
+										{% endif %}
+										<!-- PREVIOUS BOTTON-->
+
+										<!-- NAV BUTTON-->
+										{% for i in reviews.paginator.page_range %}
+											{% if reviews.number != i %}
+											<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
+											{% else %}
+											<li><a href="#" class="page active">{{ i }}</a></li>
+											{% endif %}
+										{% endfor %}
+										<!-- NAV BUTTON-->
+
+
+										<!-- NEXT BOTTON-->
+										{% if reviews.has_next %}
+											<li><a href="?page={{ reviews.next_page_number }}" class="button">Next</a></li>
+										{% else %}
+											<li><span class="button disabled">Next</span></li>
+										{% endif %}
+										<!-- NEXT BOTTON-->
+									</ul>
+								</section>									
 						</div>
 					</div>
 

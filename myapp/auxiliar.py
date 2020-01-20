@@ -24,19 +24,19 @@ class SqliteConsults:
         return res        
 
     def get_restaurants(self):
-        return self.get_search('*', 'myapp_restaurant', True)
+        return Restaurant.objects.all()
 
     def get_restaurant_by_id(self, id):
         return self.get_search('*', 'myapp_restaurant', False, 'id', str(id))                
 
     def get_users(self):
-        return self.get_search('*', 'myapp_user', True)
+        return User.objects.all()
 
     def get_user_by_id(self, id):
         return self.get_search('*', 'myapp_user', False, 'id', str(id))
 
     def get_reviews(self):
-        return self.get_search('*', 'myapp_review', True)
+        return Review.objects.all()
 
     '''Position 0 is the review, position 1 is de restaurant and position 2 is the user'''
     def ger_reviews_with_user_and_restaurant(self):

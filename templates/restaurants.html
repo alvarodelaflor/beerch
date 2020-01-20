@@ -41,14 +41,14 @@
 									<div class="posts">
 										{% for restaurant in restaurants %}
 											<article>
-												{% if 'https:' in restaurant.1 %}
+												{% if 'https:' in restaurant.id %}
 													<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
 												{% else %}
 													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
 												{% endif %}
-												<h3>{{restaurant.1}}</h3>
-												<p>{{restaurant.4}}</p>
-												<p>Tipos de comidas: {{restaurant.6}}</p>																																		
+												<h3>{{restaurant.name}}</h3>
+												<p>{{restaurant.address}}</p>
+												<p>Tipos de comidas: {{restaurant.food_types}}</p>																																		
 												<ul class="actions">
 													<li><a href="#" class="button">Más información</a></li>
 												</ul>
@@ -56,7 +56,36 @@
 										{% endfor %}
 									</div>
 								</section>
-									
+								</section>
+									<ul class="pagination">
+										<!-- PREVIOUS BOTTON-->
+										{% if restaurants.has_previous %}
+											<li><a href="?page={{ restaurants.previous_page_number }}" class="button">Prev</a></li>
+										{% else %}
+											<li><span class="button disabled">Prev</span></li>
+										{% endif %}
+										<!-- PREVIOUS BOTTON-->
+
+										<!-- NAV BUTTON-->
+										{% for i in restaurants.paginator.page_range %}
+											{% if restaurants.number != i %}
+											<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
+											{% else %}
+											<li><a href="#" class="page active">{{ i }}</a></li>
+											{% endif %}
+										{% endfor %}
+										<!-- NAV BUTTON-->
+
+
+										<!-- NEXT BOTTON-->
+										{% if restaurants.has_next %}
+											<li><a href="?page={{ restaurants.next_page_number }}" class="button">Next</a></li>
+										{% else %}
+											<li><span class="button disabled">Next</span></li>
+										{% endif %}
+										<!-- NEXT BOTTON-->
+									</ul>
+								</section>									
 						</div>
 					</div>
 
