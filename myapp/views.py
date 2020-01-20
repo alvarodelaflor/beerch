@@ -11,14 +11,22 @@ import json
 def index(request):
     return render(request, 'index.html', {'send_email': "no"})
 
+
 def indexRestaurants(request):
     import_restaurants()
     import_reviews_users()
     return render(request, 'index.html', {'send_email': "no"})
 
+
 def restaurants(request):
     restaurants = SqliteConsults().get_restaurants()
     return render(request, 'restaurants.html', {'restaurants': restaurants})
+
+
+def users(request):
+    users = SqliteConsults().get_users()
+    return render(request, 'users.html', {'users': users})    
+
 
 def my_custom_page_not_found_view(request, exception):
     return render(request, '404.html', {'exception': exception})

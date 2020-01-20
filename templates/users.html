@@ -33,22 +33,16 @@
 								<section id="banner">
 									<div class="content">
 										<header>
-											<h1>Restaurantes Disponibles</h1>
+											<h1>Usuarios registrados</h1>
 										</header>
 									</div>
 								</section>
 								<section>
 									<div class="posts">
-										{% for restaurant in restaurants %}
+										{% for user in users %}
 											<article>
-												{% if 'https:' in restaurant.1 %}
-													<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
-												{% else %}
-													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
-												{% endif %}
-												<h3>{{restaurant.2}}</h3>
-												<p>{{restaurant.4}}</p>
-												<p>Tipos de comidas: {{restaurant.6}}</p>																																		
+												<a href={{ user.2 }} class="image"><img src= {{ user.2 }} alt="" width="100%" height="100%"/></a>
+												<h3>{{user.1}}</h3>
 												<ul class="actions">
 													<li><a href="#" class="button">Más información</a></li>
 												</ul>

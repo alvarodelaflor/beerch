@@ -13,5 +13,6 @@ urlpatterns = [
     path('', myapp_view.index),
     path('admin/', admin.site.urls),
     path('indexRestaurants',myapp_view.indexRestaurants),
-    path('restaurants', myapp_view.restaurants)
+    path('restaurants', myapp_view.restaurants),
+    path('users', myapp_view.users)
 ]

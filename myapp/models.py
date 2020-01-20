@@ -12,8 +12,8 @@ class Restaurant(models.Model):
         return "{0}".format(self.nombre)
 
 class User(models.Model):
-    name = models.CharField(max_length=100)
     photo = models.URLField(default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_p3auZIO-jK7XWsgmAOwOLrSL7GcJ4JT1CQsdJl391lPu8vj&s')
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return "{0}".format(self.nombre)

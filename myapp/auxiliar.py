@@ -24,3 +24,9 @@ class SqliteConsults:
 
     def get_restaurants(self):
         return self.get_search('*', 'myapp_restaurant', True)
+
+    def get_users(self):
+        return self.get_search('*', 'myapp_user', True)
+
+    def get_reviews(self):
+        return self.get_search('*', 'myapp_review', True)        
