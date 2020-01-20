@@ -25,7 +25,12 @@ def restaurants(request):
 
 def users(request):
     users = SqliteConsults().get_users()
-    return render(request, 'users.html', {'users': users})    
+    return render(request, 'users.html', {'users': users}) 
+
+
+def reviews(request):
+    reviews = SqliteConsults().ger_reviews_with_user_and_restaurant()
+    return render(request, 'reviews.html', {'reviews': reviews})
 
 
 def my_custom_page_not_found_view(request, exception):

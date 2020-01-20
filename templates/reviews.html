@@ -33,59 +33,42 @@
 								<section id="banner">
 									<div class="content">
 										<header>
-											<h1>¿Buscas un buen restaurante?</h1>
-											<img src="/static/images/index_panoramic.jpg" alt="" width="100%" height="100%"/>		
+											<h1>Opiniones de los usuarios</h1>
 										</header>
 									</div>
 								</section>
-							<!-- Section -->
 								<section>
-									<header class="major">
-										<h2>En nuestra web podrás:</h2>
-									</header>
-									<div class="features">
-										<article>
-											<span class="icon solid fa-map-pin"></span>
-											<div class="content">
-												<h3>Buscar por localidad</h3>
-												<p>Almacenamos todos los restaurantes disponibles de distintas localidades.</p>
+									<div class="posts">
+										{% for review in reviews %}
+											<article>
+												{% if 'https:' in review.1 %}
+													<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
+												{% else %}
+													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
+												{% endif %}
+												<h3>{{review.2.1}} sobre {{review.1.1}}</h3>
+												<p>{{review.0.3}}</p>
+												{% if review.0.1 == 0 %}
+													<img class="image" src="/static/images/rating/star_0.png" alt="" width="40%" height="5%"/>													
+												{% elif review.0.1 == 1 %}
+													<img class="image" src="/static/images/rating/star_1.png" alt="" width="40%" height="5%"/>													
+												{% elif review.0.1 == 2 %}
+													<img class="image" src="/static/images/rating/star_2.png" alt="" width="40%" height="5%"/>													
+												{% elif review.0.1 == 3 %}
+													<img class="image" src="/static/images/rating/star_3.png" alt="" width="40%" height="5%"/>													
+												{% elif review.0.1 == 4 %}
+													<img src="/static/images/rating/star_4.png" alt="" width="40%" height="5%"/>													
+												{% elif review.0.1 == 5 %}
+													<img class="image" class="image" src="/static/images/rating/star_5.png" alt="" width="40%" height="5%"/>													
+												{% endif %}
 												<ul class="actions">
-													<li><a href="#" class="button">Saber más</a></li>
-												</ul>												
-											</div>
-										</article>
-										<article>
-											<span class="icon solid fa-utensils"></span>
-											<div class="content">
-												<h3>¡Mira el restaurante!</h3>
-												<p>¿Necesitas más información de un restaurante? Nosotros te la proporcinaremos.</p>
-												<ul class="actions">
-													<li><a href="#" class="button">Saber más</a></li>
-												</ul>												
-											</div>
-										</article>
-										<article>
-											<span class="icon solid fa-comments"></span>
-											<div class="content">
-												<h3>Observa las opiones</h3>
-												<p>Almacenamos restaurantes, pero también las opiones de distintos usuarios para que puedas valorar tu mismo.</p>
-												<ul class="actions">
-													<li><a href="#" class="button">Saber más</a></li>
-												</ul>												
-											</div>
-										</article>
-										<article>
-											<span class="icon solid fa-thumbs-up"></span>
-											<div class="content">
-												<h3>¿Necesitas ayuda?</h3>
-												<p>Podemos recomendarte un restaurante en función de tus necesidades.</p>
-												<ul class="actions">
-													<li><a href="#" class="button">Saber más</a></li>
-												</ul>												
-											</div>
-										</article>
+													<li><a href="#" class="button">Más información</a></li>
+												</ul>
+											</article>
+										{% endfor %}
 									</div>
 								</section>
+									
 						</div>
 					</div>
 
@@ -118,7 +101,7 @@
                                         <li><a href="restaurants">Restaurantes disponibles</a></li>
 										<li><a href="reviews">Opiniones de usuarios</a></li>
 										<li><a href="users">Usuarios registrados</a></li>
-									</ul>															
+									</ul>																
 								</nav>
 		 				</div>
 					</div>

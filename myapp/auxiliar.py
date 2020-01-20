@@ -9,24 +9,45 @@ class SqliteConsults:
         try:
             conn = lite.connect('db.sqlite3')
             conn.text_factory = str
-            search_aux = "%" + search + "%"
+            search_aux = "%" + str(search) + "%"
             if ciega:
                 cursor = conn.execute("SELECT * FROM {}".format(table))
             else:
-                cursor = conn.execute("SELECT {} FROM {} WHERE {} LIKE {}".format(atribute_to_find, table, atribute_to_compare, search_aux))
+                query = "SELECT {} FROM {} WHERE {} LIKE '{}'".format(atribute_to_find, table, atribute_to_compare, search_aux)
+                cursor = conn.execute(query)
             for row in cursor:
                 res.append(row)
             conn.close()
         except:
-            e = sys.exc_info()[0]
+            e = sys.exc_info()
             print("Error doing the search (get_search): {0}".format(e))
         return res        
 
     def get_restaurants(self):
         return self.get_search('*', 'myapp_restaurant', True)
 
+    def get_restaurant_by_id(self, id):
+        return self.get_search('*', 'myapp_restaurant', False, 'id', str(id))                
+
     def get_users(self):
         return self.get_search('*', 'myapp_user', True)
 
+    def get_user_by_id(self, id):
+        return self.get_search('*', 'myapp_user', False, 'id', str(id))
+
     def get_reviews(self):
-        return self.get_search('*', 'myapp_review', True)        
+        return self.get_search('*', 'myapp_review', True)
+
+    '''Position 0 is the review, position 1 is de restaurant and position 2 is the user'''
+    def ger_reviews_with_user_and_restaurant(self):
+        res = []
+        reviews = self.get_search('*', 'myapp_review', True)
+        for review in reviews:
+            aux = []
+            restaurant = self.get_restaurant_by_id(review[4])
+            user = self.get_user_by_id(review[5])
+            aux.append(review)
+            aux.append(restaurant[0])
+            aux.append(user[0])
+            res.append(aux)
+        return res
