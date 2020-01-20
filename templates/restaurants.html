@@ -38,6 +38,17 @@
 									</div>
 								</section>
 								<section>
+								<section id="search" class="alt">
+									<form method="post" action="restaurants">
+									{% csrf_token %}
+										{% if placeholder %}
+											<input type="text" name="nameRestaurant" id="nameRestaurant" placeholder="{{ placeholder }}" />
+										{% else %}
+											<input type="text" name="nameRestaurant" id="nameRestaurant" placeholder="Filtra por nombre del restaurante" />
+										{% endif %}
+									</form>
+								</section>
+								<section>								
 									<div class="posts">
 										{% for restaurant in restaurants %}
 											<article>

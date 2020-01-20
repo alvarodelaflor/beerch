@@ -22,7 +22,11 @@ def indexRestaurants(request):
 
 
 def restaurants(request):
-    restaurant_list = Restaurant.objects.all()
+    data = request.POST.get('nameRestaurant', False)
+    if data:
+        restaurant_list = Restaurant.objects.filter(name__icontains=data)
+    else:
+        restaurant_list = Restaurant.objects.all()
     page = request.GET.get('page', 1)
 
     paginator = Paginator(restaurant_list, 4)
@@ -33,7 +37,11 @@ def restaurants(request):
     except EmptyPage:
         restaurants = paginator.page(paginator.num_pages)
 
-    return render(request, 'restaurants.html', { 'restaurants': restaurants })
+    if data != '':
+        placeholder = data    
+    else:
+        placeholder = 'Filtra por nombre del restaurante'
+    return render(request, 'restaurants.html', { 'restaurants': restaurants, 'placeholder': placeholder })
 
 
 def users(request):
