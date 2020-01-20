@@ -7,7 +7,7 @@ class Restaurant(models.Model):
     phone = models.CharField(max_length=100)
     food_types = models.CharField(max_length=100)
     special_diets = models.CharField(max_length=100)
-
+    link = models.URLField(max_length=200,default='https://www.tripadvisor.es')
     def __str__(self):
         return "{0}".format(self.nombre)
 
