@@ -12,5 +12,6 @@ urlpatterns = [
     path('logout', users_view.logout),
     path('', myapp_view.index),
     path('admin/', admin.site.urls),
-    path('indexRestaurants',myapp_view.indexRestaurants)
+    path('indexRestaurants',myapp_view.indexRestaurants),
+    path('restaurants', myapp_view.restaurants)
 ]
