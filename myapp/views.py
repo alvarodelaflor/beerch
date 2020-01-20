@@ -84,7 +84,16 @@ def reviews(request):
         placeholder = data
     else:
         placeholder = 'Busque por nombre de usuario o restaurante'
-    return render(request, 'reviews.html', { 'reviews': reviews, 'placeholder': placeholder })   
+    return render(request, 'reviews.html', { 'reviews': reviews, 'placeholder': placeholder })
+
+def review_post(request):
+    id = request.POST.get('id', False)
+    reviews =  Review.objects.filter(id=id)
+    if len(reviews) > 0:
+        review = reviews[0]
+    else:
+        review = None
+    return render(request, 'review.html', { 'review': review})
 
 
 def my_custom_page_not_found_view(request, exception):

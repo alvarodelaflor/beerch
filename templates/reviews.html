@@ -72,9 +72,11 @@
 													<img class="image" class="image" src="/static/images/rating/star_5.png" alt="" width="40%" height="5%"/>													
 												{% endif %}
 												<p>{{review.description}}</p>												
-												<ul class="actions">
-													<li><a href="#" class="button">Más información</a></li>
-												</ul>
+												<form method="post" action="review">
+												{% csrf_token %}
+													<input id="id" name="id" type="hidden" value={{ review.id }}>
+													<button type="submit">Ver más</button>
+												</form>
 											</article>
 										{% endfor %}
 									</div>
