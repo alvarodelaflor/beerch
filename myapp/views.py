@@ -71,6 +71,7 @@ def users_filter(request):
         return render(request, 'users.html', { 'users': users, 'placeholder': placeholder })    
 
 def reviews(request):
+    reviews = SqliteConsults().ger_reviews_with_user_and_restaurant()
     reviews_list = Review.objects.all()
     page = request.GET.get('page', 1)
 
@@ -81,8 +82,8 @@ def reviews(request):
         reviews = paginator.page(1)
     except EmptyPage:
         reviews = paginator.page(paginator.num_pages)
-        placeholder = 'Filtra por nombre de usuario'
-        return render(request, 'users.html', { 'users': users, 'placeholder': placeholder })    
+
+    return render(request, 'reviews.html', { 'reviews': reviews })   
 
 
 def my_custom_page_not_found_view(request, exception):
