@@ -15,6 +15,5 @@ urlpatterns = [
     path('indexRestaurants',myapp_view.indexRestaurants),
     path('restaurants', myapp_view.restaurants),
     path('users', myapp_view.users),
-    path('users_filter', myapp_view.users_filter),
     path('reviews', myapp_view.reviews)
 ]

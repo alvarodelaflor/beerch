@@ -39,7 +39,7 @@
 								</section>
 								<section>
 								<section id="search" class="alt">
-									<form method="post" action="users_filter">
+									<form method="post" action="users">
 									{% csrf_token %}
 										{% if placeholder %}
 											<input type="text" name="username" id="username" placeholder="{{ placeholder }}" />
@@ -47,7 +47,8 @@
 											<input type="text" name="username" id="username" placeholder="Filtra por nombre de usuario" />
 										{% endif %}
 									</form>
-								</section>									
+								</section>
+								<section>								
 									<div class="posts">
 										{% for user in users %}
 											<article>

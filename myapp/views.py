@@ -5,6 +5,7 @@ from myapp.populate import import_restaurants, import_reviews_users
 from myapp.auxiliar import SqliteConsults
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp.models import Restaurant, User, Review
+from django.db.models import Q
 import urllib.parse
 import urllib.request
 import json
@@ -36,22 +37,8 @@ def restaurants(request):
 
 
 def users(request):
-    user_list = User.objects.all()
-    page = request.GET.get('page', 1)
-
-    paginator = Paginator(user_list, 4)
-    try:
-        users = paginator.page(page)
-    except PageNotAnInteger:
-        users = paginator.page(1)
-    except EmptyPage:
-        users = paginator.page(paginator.num_pages)
-
-    return render(request, 'users.html', { 'users': users })
-
-def users_filter(request):
-    data = request.POST['username']
-    if data != '':
+    data = request.POST.get('username', False)
+    if data:
         user_list = User.objects.filter(name__icontains=data)
     else:
         user_list = User.objects.all()
@@ -65,14 +52,17 @@ def users_filter(request):
     except EmptyPage:
         users = paginator.page(paginator.num_pages)
     if data != '':
-        return render(request, 'users.html', { 'users': users, 'placeholder': data})    
+        placeholder = data    
     else:
         placeholder = 'Filtra por nombre de usuario'
-        return render(request, 'users.html', { 'users': users, 'placeholder': placeholder })    
+    return render(request, 'users.html', { 'users': users, 'placeholder': placeholder })    
 
 def reviews(request):
-    reviews = SqliteConsults().ger_reviews_with_user_and_restaurant()
-    reviews_list = Review.objects.all()
+    data = request.POST.get('search', False)
+    if data:
+        reviews_list = Review.objects.filter(Q(user__name__icontains=data) | Q(restaurant__name__icontains=data))
+    else:
+        reviews_list = Review.objects.all()    
     page = request.GET.get('page', 1)
 
     paginator = Paginator(reviews_list, 4)
@@ -82,8 +72,11 @@ def reviews(request):
         reviews = paginator.page(1)
     except EmptyPage:
         reviews = paginator.page(paginator.num_pages)
-
-    return render(request, 'reviews.html', { 'reviews': reviews })   
+    if data:
+        placeholder = data
+    else:
+        placeholder = 'Busque por nombre de usuario o restaurante'
+    return render(request, 'reviews.html', { 'reviews': reviews, 'placeholder': placeholder })   
 
 
 def my_custom_page_not_found_view(request, exception):
