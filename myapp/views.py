@@ -6,6 +6,7 @@ from myapp.auxiliar import SqliteConsults
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp.models import Restaurant, User, Review
 from django.db.models import Q
+from django.db.models import Count
 import urllib.parse
 import urllib.request
 import json
@@ -43,6 +44,28 @@ def restaurants(request):
         placeholder = 'Filtra por nombre del restaurante'
     return render(request, 'restaurants.html', { 'restaurants': restaurants, 'placeholder': placeholder })
 
+
+def restaurants_town(request):    
+    data = request.POST.get('town', False)
+    if data:
+        restaurant_list = Restaurant.objects.filter(town=data)
+    else:
+        restaurant_list = Restaurant.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(restaurant_list, 4)
+    try:
+        restaurants = paginator.page(page)
+    except PageNotAnInteger:
+        restaurants = paginator.page(1)
+    except EmptyPage:
+        restaurants = paginator.page(paginator.num_pages)
+
+    if data != '':
+        placeholder = data    
+    else:
+        placeholder = 'Filtra por nombre del restaurante'
+    return render(request, 'restaurants.html', { 'restaurants': restaurants, 'placeholder': placeholder })
 
 def restaurant_profile(request):
     id = request.POST.get('id', False)
@@ -142,6 +165,28 @@ def review_post(request):
     else:
         review = None
     return render(request, 'review.html', { 'review': review})
+
+
+def towns(request):
+    data = request.POST.get('town', False)
+    if data:
+        towns_list = Restaurant.objects.filter(town__icontains=data).values('town').annotate(dcount=Count('town'))
+    else:
+        towns_list = Restaurant.objects.values('town').annotate(dcount=Count('town'))
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(towns_list, 4)
+    try:
+        towns = paginator.page(page)
+    except PageNotAnInteger:
+        towns = paginator.page(1)
+    except EmptyPage:
+        towns = paginator.page(paginator.num_pages)
+    if data:
+        placeholder = data
+    else:
+        placeholder = 'Filtra por nombre de la localidad'
+    return render(request, 'towns.html', { 'towns': towns, 'placeholder': placeholder })    
 
 
 def my_custom_page_not_found_view(request, exception):

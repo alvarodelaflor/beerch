@@ -27,7 +27,7 @@ class SqliteConsults:
         return Restaurant.objects.all()
 
     def get_restaurant_by_id(self, id):
-        return self.get_search('*', 'myapp_restaurant', False, 'id', str(id))                
+        return self.get_search('*', 'myapp_restaurant', False, 'id', str(id))
 
     def get_users(self):
         return User.objects.all()
