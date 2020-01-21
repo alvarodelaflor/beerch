@@ -29,75 +29,97 @@
 
 						<section>
 							<header class="main">
-								<h1>Opinión de {{review.user.name}} del restaurante {{review.restaurant.name}} </h1>
+								<h1>{{restaurant.name}}</h1>
 							</header>
 
 							<span class="image main">
 								{% if 'https:' in review.restaurant.id %}
 									<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
 								{% else %}
-									<a href="#" class="image"><img src="/static/images/food.jpg" alt="" width="100%" height="100%"/></a>
-								{% endif %}							
+									<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
+								{% endif %}						
 							</span>
 
 							<hr class="major" />
 
-							<h2>Comentario</h2>
-							<p>{{ review.description }}</p>
+							<header class="major">
+								<h2>Datos del restaurante</h2>
+							</header>
+							<div class="features">
+								<article>
+									<div class="content">
+										<h3>Menú ofrecido</h3>
+										<p>{{restaurant.food_types}}</p>
+										<h3>Diestas especiales</h3>
+										<p>{{restaurant.special_diets}}</p>										
+									</div>
+								</article>
+								<article>
+									<div class="content">
+										<h3>Contacto</h3>
+										<p>Localidad: {{restaurant.town}}</p>
+										<p>Dirección: {{restaurant.address}}</p>
+										<p>Teléfono: {{restaurant.phone}}</p>
+									</div>
+								</article>
+							</div>
 
 							<hr class="major" />
 
 							<header class="major">
-								<h2>Más datos de la valoración</h2>
+								<h2>Valoraciones</h2>
 							</header>
-							<div class="features">
-								<article>
-									<span><img src={{ review.user.photo }} alt="" width="90%" height="90%" style="border-radius: 60%;"/></span>
-									<div class="content">
-										<h3>Autor: {{ review.user.name }}</h3>
-										<p>{{review.visit_date}}</p>
-										<form method="post" action="user">
-										{% csrf_token %}
-											<input id="id" name="id" type="hidden" value={{ review.user.id }}>
-											<button type="submit">Ver perfil</button>
-										</form>											
-									</div>
-								</article>
-								<article>
-									<div class="content">
-										<h3>Puntuación</h3>
-										<p>Siendo 0 estrellas el mínimo y 5 el máximo</p>
-										{% for i in '12345' %}
-											{% if i|add:"0" <= review.rate %}
-												<i class="fa fa-star fa-4x"></i>
-											{% else %}
-												<i class="far fa-star fa-4x"></i>								
-											{% endif %}	
-										{% endfor %}
-									</div>
-								</article>
-							</div>
-							<h2>Restaurante</h2>
 								<section>								
 									<div class="posts">
-										<article>
-											{% if 'https:' in review.restaurant.id %}
-												<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
-											{% else %}
-												<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
-											{% endif %}
-										</article>
-										<article>
-											<h2>{{review.restaurant.name}}</h2>
-											<p>{{review.restaurant.address}}</p>
-											<p>Tipos de comidas: {{review.restaurant.food_types}}</p>																																		
-											<form method="post" action="restaurant">
-											{% csrf_token %}
-												<input id="id" name="id" type="hidden" value={{ review.restaurant.id }}>
-												<button type="submit">Ver el restaurante</button>
-											</form>
-										</article>										
+										{% for review in reviews %}
+											<article>
+												<div class="content" style="margin-bottom: 20px;">
+													<h3>{{review.user.name}}</h3>
+													{% for i in '12345' %}
+														{% if i|add:"0" <= review.rate %}
+															<i class="fa fa-star fa-2x"></i>
+														{% else %}
+															<i class="far fa-star fa-2x"></i>								
+														{% endif %}	
+													{% endfor %}
+													<p style="margin-top: 15px;">{{review.description}}</p>
+												</div>
+												<form method="post" action="review">
+												{% csrf_token %}
+													<input id="id" name="id" type="hidden" value={{ review.id }}>
+													<button type="submit">Ver opinión</button>
+												</form>									
+											</article>
+										{% endfor %}								
 									</div>
+										<ul class="pagination">
+											<!-- PREVIOUS BOTTON-->
+											{% if reviews.has_previous %}
+												<li><a href="?page={{ reviews.previous_page_number }}&id={{restaurant.id}}" class="button">Prev</a></li>
+											{% else %}
+												<li><span class="button disabled">Prev</span></li>
+											{% endif %}
+											<!-- PREVIOUS BOTTON-->
+
+											<!-- NAV BUTTON-->
+											{% for i in reviews.paginator.page_range %}
+												{% if reviews.number != i %}
+												<li><a href="?page={{ i }}&id={{restaurant.id}}" class="page">{{ i }}</a></li>
+												{% else %}
+												<li><a href="#" class="page active">{{ i }}</a></li>
+												{% endif %}
+											{% endfor %}
+											<!-- NAV BUTTON-->
+
+
+											<!-- NEXT BOTTON-->
+											{% if reviews.has_next %}
+												<li><a href="?page={{ reviews.next_page_number }}&id={{restaurant.id}}" class="button">Next</a></li>
+											{% else %}
+												<li><span class="button disabled">Next</span></li>
+											{% endif %}
+											<!-- NEXT BOTTON-->
+										</ul>									
 								</section>													
 						</section>
 				</div>

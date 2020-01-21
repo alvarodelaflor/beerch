@@ -44,6 +44,30 @@ def restaurants(request):
     return render(request, 'restaurants.html', { 'restaurants': restaurants, 'placeholder': placeholder })
 
 
+def restaurant_profile(request):
+    id = request.POST.get('id', False)
+    if id == False:
+        id = request.GET.get('id', False)
+    restaurants =  Restaurant.objects.filter(id=id)
+    if len(restaurants) > 0:
+        restaurant = restaurants[0]
+        reviews_list = Review.objects.filter(restaurant=restaurant)
+
+        page = request.GET.get('page', 1)
+
+        paginator = Paginator(reviews_list, 4)
+        try:
+            reviews = paginator.page(page)
+        except PageNotAnInteger:
+            reviews = paginator.page(1)
+        except EmptyPage:
+            reviews = paginator.page(paginator.num_pages)        
+    else:
+        user = None
+        reviews = []
+    return render(request, 'restaurant.html', { 'restaurant': restaurant, 'reviews': reviews})     
+
+
 def users(request):
     data = request.POST.get('username', False)
     if data:
@@ -68,6 +92,8 @@ def users(request):
 
 def user_profile(request):
     id = request.POST.get('id', False)
+    if id == False:
+        id = request.GET.get('id', False)
     users =  User.objects.filter(id=id)
     if len(users) > 0:
         user = users[0]

@@ -60,9 +60,11 @@
 												<h3>{{restaurant.name}}</h3>
 												<p>{{restaurant.address}}</p>
 												<p>Tipos de comidas: {{restaurant.food_types}}</p>																																		
-												<ul class="actions">
-													<li><a href="#" class="button">Más información</a></li>
-												</ul>
+												<form method="post" action="restaurant">
+												{% csrf_token %}
+													<input id="id" name="id" type="hidden" value={{ restaurant.id }}>
+													<button type="submit">Ver restaurante</button>
+												</form>
 											</article>
 										{% endfor %}
 									</div>

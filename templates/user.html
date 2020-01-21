@@ -61,13 +61,13 @@
 														<form method="post" action="review">
 														{% csrf_token %}
 															<input id="id" name="id" type="hidden" value={{ review.id }}>
-															<button type="submit">Ver más</button>
+															<button type="submit">Ver opinión</button>
 														</form>									
 												{% endfor %}
 											<ul class="pagination">
 												<!-- PREVIOUS BOTTON-->
 												{% if reviews.has_previous %}
-													<li><a href="?page={{ reviews.previous_page_number }}" class="button">Prev</a></li>
+													<li><a href="?page={{ reviews.previous_page_number }}&id={{user.id}}" class="button">Prev</a></li>
 												{% else %}
 													<li><span class="button disabled">Prev</span></li>
 												{% endif %}
@@ -76,7 +76,7 @@
 												<!-- NAV BUTTON-->
 												{% for i in reviews.paginator.page_range %}
 													{% if reviews.number != i %}
-													<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
+													<li><a href="?page={{ i }}&id={{user.id}}" class="page">{{ i }}</a></li>
 													{% else %}
 													<li><a href="#" class="page active">{{ i }}</a></li>
 													{% endif %}
@@ -86,7 +86,7 @@
 
 												<!-- NEXT BOTTON-->
 												{% if reviews.has_next %}
-													<li><a href="?page={{ reviews.next_page_number }}" class="button">Next</a></li>
+													<li><a href="?page={{ reviews.next_page_number }}&id={{user.id}}" class="button">Next</a></li>
 												{% else %}
 													<li><span class="button disabled">Next</span></li>
 												{% endif %}
