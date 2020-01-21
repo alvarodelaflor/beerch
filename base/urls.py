@@ -15,6 +15,7 @@ urlpatterns = [
     path('indexRestaurants',myapp_view.indexRestaurants),
     path('restaurants', myapp_view.restaurants),
     path('users', myapp_view.users),
+    path('user', myapp_view.user_profile),
     path('reviews', myapp_view.reviews),
     path('review', myapp_view.review_post)
 ]
