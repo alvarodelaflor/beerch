@@ -40,17 +40,23 @@ def find_url_restaurant():
         else:
             phone = phone.text
         header2 = soupRestaurant.find("div",{"class":"restaurants-detail-overview-cards-DetailsSectionOverviewCard__detailCard--WpImp"})
+        food_types = "No Procede"
+        special_diets = "No procede"
         if header2 is None:
             food_types = "No Procede"
             special_diets = "No procede"
         else: 
-            header2 = header2.findAll("div",{"class":"restaurants-detail-overview-cards-DetailsSectionOverviewCard__tagText--1OH6h"})            
-            if len(header2) > 1:     
-                food_types = header2[0].text
-                special_diets = header2[1].text
-            else:
-                food_types = "No Procede"
-                special_diets = "No procede"
+            header2 = header2.find("div",{"class":"restaurants-detail-overview-cards-DetailsSectionOverviewCard__detailsSummary--evhlS"})                       
+            heads = header2.findAll("div",{"class":"restaurants-detail-overview-cards-DetailsSectionOverviewCard__categoryTitle--2RJP_"})
+            content = header2.findAll("div",{"class":"restaurants-detail-overview-cards-DetailsSectionOverviewCard__tagText--1OH6h"})
+        for head in heads:
+            title = head.text
+            if title == "Dietas especiales":
+                index = heads.index(head)
+                special_diets = content[index].text
+            elif title == "Tipos de cocina":
+                index = heads.index(head)
+                food_types = content[index].text
         aux = [name, town, address, phone, food_types, special_diets,urlReview]
         res.append(aux)
     return res
