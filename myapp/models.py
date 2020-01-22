@@ -1,5 +1,11 @@
 from django.db import models
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "{0}".format(self.name)
+
 class Restaurant(models.Model):
     name = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
@@ -7,6 +13,8 @@ class Restaurant(models.Model):
     phone = models.CharField(max_length=100)
     special_diets = models.CharField(max_length=100)
     link = models.URLField(max_length=200,default='https://www.tripadvisor.es')
+    categories = models.ManyToManyField(Category)
+
     def __str__(self):
         return "{0}".format(self.name)
 
@@ -17,12 +25,6 @@ class User(models.Model):
     def __str__(self):
         return "{0}".format(self.name)
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return "{0}".format(self.name)
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
