@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from base import settings
-from myapp.populate import import_restaurants, import_reviews_users
+from myapp.populate import import_restaurants, import_reviews_users, find_url_reviews_from_user, import_reviews_restaurants
 from myapp.auxiliar import SqliteConsults
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp.models import Restaurant, User, Review
@@ -18,6 +18,8 @@ def index(request):
 def indexRestaurants(request):
     import_restaurants()
     import_reviews_users()
+    #find_url_reviews_from_user()
+    import_reviews_restaurants()
     return render(request, 'index.html', {'send_email': "no"})
 
 
