@@ -65,26 +65,38 @@
 								</section>
 									<ul class="pagination">
 										<!-- PREVIOUS BOTTON-->
-										{% if users.has_previous %}
+										{% if towns.has_previous %}
 											<li><a href="?page={{ towns.previous_page_number }}" class="button">Prev</a></li>
 										{% else %}
 											<li><span class="button disabled">Prev</span></li>
 										{% endif %}
 										<!-- PREVIOUS BOTTON-->
 
-										<!-- NAV BUTTON-->
-										{% for i in towns.paginator.page_range %}
-											{% if towns.number != i %}
-											<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
-											{% else %}
-											<li><a href="#" class="page active">{{ i }}</a></li>
+										<!-- PUNTOS SUSPENSIVOS -->
+											{% if towns.number|add:'-4' > 1 %}
+												<li><a href="?page=1">Primera</a></li>
+											{% endif %}
+										<!-- PUNTOS SUSPENSIVOS -->
+
+
+										<!-- NAV BUTTON-->							
+										{% for i in towns.paginator.page_range %}			
+											{% if towns.number == i %}
+												<li><a href="#" class="page active">{{ i }}</a></li>
+    										{% elif i > towns.number|add:'-5' and i < towns.number|add:'5' %}
+												<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
 											{% endif %}
 										{% endfor %}
 										<!-- NAV BUTTON-->
 
+										<!-- PUNTOS SUSPENSIVOS -->
+											{% if towns.number|add:'4' > 1 and towns.has_next %}
+												<li><a href="?page={{ towns.number|add:'-5' }}">Última</a></li>
+											{% endif %}
+										<!-- PUNTOS SUSPENSIVOS -->
 
 										<!-- NEXT BOTTON-->
-										{% if towns.has_next %}
+										{% if users.has_next %}
 											<li><a href="?page={{ towns.next_page_number }}" class="button">Next</a></li>
 										{% else %}
 											<li><span class="button disabled">Next</span></li>

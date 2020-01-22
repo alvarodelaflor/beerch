@@ -92,34 +92,46 @@
 											</article>
 										{% endfor %}								
 									</div>
-										<ul class="pagination">
-											<!-- PREVIOUS BOTTON-->
-											{% if reviews.has_previous %}
-												<li><a href="?page={{ reviews.previous_page_number }}&id={{restaurant.id}}" class="button">Prev</a></li>
-											{% else %}
-												<li><span class="button disabled">Prev</span></li>
-											{% endif %}
-											<!-- PREVIOUS BOTTON-->
+									<ul class="pagination">
+										<!-- PREVIOUS BOTTON-->
+										{% if reviews.has_previous %}
+											<li><a href="?page={{ reviews.previous_page_number }}&id={{restaurant.id}}" class="button">Prev</a></li>
+										{% else %}
+											<li><span class="button disabled">Prev</span></li>
+										{% endif %}
+										<!-- PREVIOUS BOTTON-->
 
-											<!-- NAV BUTTON-->
-											{% for i in reviews.paginator.page_range %}
-												{% if reviews.number != i %}
-												<li><a href="?page={{ i }}&id={{restaurant.id}}" class="page">{{ i }}</a></li>
-												{% else %}
+										<!-- PUNTOS SUSPENSIVOS -->
+											{% if reviews.number|add:'-4' > 1 %}
+												<li><a href="?page=1&id={{restaurant.id}}">Primera</a></li>
+											{% endif %}
+										<!-- PUNTOS SUSPENSIVOS -->
+
+
+										<!-- NAV BUTTON-->							
+										{% for i in reviews.paginator.page_range %}			
+											{% if reviews.number == i %}
 												<li><a href="#" class="page active">{{ i }}</a></li>
-												{% endif %}
-											{% endfor %}
-											<!-- NAV BUTTON-->
-
-
-											<!-- NEXT BOTTON-->
-											{% if reviews.has_next %}
-												<li><a href="?page={{ reviews.next_page_number }}&id={{restaurant.id}}" class="button">Next</a></li>
-											{% else %}
-												<li><span class="button disabled">Next</span></li>
+    										{% elif i > reviews.number|add:'-5' and i < reviews.number|add:'5' %}
+												<li><a href="?page={{ i }}&id={{restaurant.id}}" class="page">{{ i }}</a></li>
 											{% endif %}
-											<!-- NEXT BOTTON-->
-										</ul>									
+										{% endfor %}
+										<!-- NAV BUTTON-->
+
+										<!-- PUNTOS SUSPENSIVOS -->
+											{% if reviews.number|add:'4' > 1 and reviews.has_next %}
+												<li><a href="?page={{ reviews.number|add:'-5' }}&id={{restaurant.id}}">Última</a></li>
+											{% endif %}
+										<!-- PUNTOS SUSPENSIVOS -->
+
+										<!-- NEXT BOTTON-->
+										{% if users.has_next %}
+											<li><a href="?page={{ reviews.next_page_number }}&id={{restaurant.id}}" class="button">Next</a></li>
+										{% else %}
+											<li><span class="button disabled">Next</span></li>
+										{% endif %}
+										<!-- NEXT BOTTON-->
+									</ul>						
 								</section>													
 						</section>
 				</div>
