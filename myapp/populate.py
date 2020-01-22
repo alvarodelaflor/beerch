@@ -58,7 +58,8 @@ def find_url_restaurant():
                 index = heads.index(head)
                 food_types = content[index].text
         aux = [name, town, address, phone, food_types, special_diets,urlReview]
-        res.append(aux)
+        if len(res) < 1:
+            res.append(aux)
     return res
 
 def find_url_user_review():
@@ -224,7 +225,7 @@ def import_restaurants():
             names = names
         else:
             names.append(restaurant.name)
-            restaurantsNew.append(restaurant)
+            restaurantsNew.append(restaurant)    
     Restaurant.objects.bulk_create(restaurantsNew)
 
     for restaurantAux in restaurantsAux:
@@ -338,8 +339,8 @@ def import_reviews_restaurants():
             e = sys.exc_info()[0]
             print("Error when creating a restaurant: {0}".format(e))
     names = []
-    restaurants = Restaurant.objects.filter()
-    for restaurant in restaurants:
+    restaurantsAll = Restaurant.objects.filter()
+    for restaurant in restaurantsAll:
         names.append(restaurant.name)
 
     restaurantsNew = []
@@ -358,7 +359,9 @@ def import_reviews_restaurants():
             categories = Category.objects.filter()
             for category in categories:
                 if type_food.strip() == category.name:
-                    Restaurant.objects.filter(name=line[0])[0].categories.add(category)
+                    if len(Restaurant.objects.filter(name=line[0])) > 0:
+                        Restaurant.objects.filter(name=line[0])[0].categories.add(category)
+
 
     for line in aux:
         try:
