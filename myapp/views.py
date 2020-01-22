@@ -4,7 +4,7 @@ from base import settings
 from myapp.populate import import_restaurants, import_reviews_users, find_url_reviews_from_user, import_reviews_restaurants
 from myapp.auxiliar import SqliteConsults
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from myapp.models import Restaurant, User, Review
+from myapp.models import Restaurant, User, Review, Category
 from django.db.models import Q
 from django.db.models import Count
 from myapp.recommendations import  transformPrefs, calculateSimilarItems, getRecommendations, getRecommendedItems, topMatches
@@ -53,6 +53,8 @@ def similarRestaurant(id):
         similar.append(re[0])
 #    items= zip(restaurant,similar)
 #    aux = [restaurant, items]
+    print('Similar')
+    print(similar)
     return restaurant
 
 
@@ -131,6 +133,9 @@ def restaurant_profile(request):
     restaurants =  Restaurant.objects.filter(id=id)
     if len(restaurants) > 0:
         restaurant = restaurants[0]
+        categories = []
+        if restaurant:
+            categories = Category.objects.filter(restaurant__id=id)
         reviews_list = Review.objects.filter(restaurant=restaurant)
 
         page = request.GET.get('page', 1)
@@ -145,7 +150,7 @@ def restaurant_profile(request):
     else:
         user = None
         reviews = []
-    return render(request, 'restaurant.html', { 'restaurant': restaurant, 'reviews': reviews, 'similar': similar})     
+    return render(request, 'restaurant.html', { 'restaurant': restaurant, 'reviews': reviews, 'similar': similar, 'categories': categories})     
 
 
 def users(request):

@@ -49,7 +49,11 @@
 								<article>
 									<div class="content">
 										<h3>Menú ofrecido</h3>
-										<p>{{restaurant.food_types}}</p>
+										<p>
+											{% for food_types in categories %}
+												{{food_types}}
+											{% endfor %}
+										</p>
 										<h3>Diestas especiales</h3>
 										<p>{{restaurant.special_diets}}</p>										
 									</div>
@@ -148,8 +152,7 @@
 													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
 												{% endif %}
 												<h3>{{restaurant.name}}</h3>
-												<p>{{restaurant.address}}</p>
-												<p>Tipos de comidas: {{restaurant.food_types}}</p>																																		
+												<p>{{restaurant.address}}</p>																																		
 												<form method="post" action="restaurant">
 												{% csrf_token %}
 													<input id="id" name="id" type="hidden" value={{ restaurant.id }}>

@@ -89,8 +89,7 @@
 										</article>
 										<article>
 											<h2>{{review.restaurant.name}}</h2>
-											<p>{{review.restaurant.address}}</p>
-											<p>Tipos de comidas: {{review.restaurant.food_types}}</p>																																		
+											<p>{{review.restaurant.address}}</p>																																	
 											<form method="post" action="restaurant">
 											{% csrf_token %}
 												<input id="id" name="id" type="hidden" value={{ review.restaurant.id }}>
