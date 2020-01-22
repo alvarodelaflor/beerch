@@ -160,7 +160,8 @@ def find_url_reviews_from_user():
                                 visit_date = visit_date.text
                             else:
                                 visit_date = "No procede"
-                            aux = [name, town, address, phone, food_types, special_diets, urlReview, title, description, rate, visit_date]
+                            user_name = user.name
+                            aux = [name, town, address, phone, food_types, special_diets, urlReview, title, description, rate, visit_date, user_name]
                             res.append(aux)
     return res
 
@@ -179,6 +180,29 @@ def import_restaurants():
     Category.objects.all().delete()
     restaurants = []
     categories = []
+    
+    for restaurantAux in restaurantsAux:
+        try:   
+            types = restaurantAux[4]
+            restaurantName = restaurantAux[0]
+            types = types.split(',')
+            for food_type in types:
+                name = food_type.strip()
+                categories.append(Category(name=name)) 
+        
+        except:
+            e = sys.exc_info()[0]
+            print("Error when creating a categpory: {0}".format(e))
+    names = []
+    categoriesnew = []
+    for category in categories:
+        if category.name  in names:
+            names = names
+        else:
+            names.append(category.name)
+            categoriesnew.append(category)
+    Category.objects.bulk_create(categoriesnew)  
+
     for restaurantAux in restaurantsAux:
         try:
             name = restaurantAux[0]
@@ -189,32 +213,29 @@ def import_restaurants():
             link = restaurantAux[6]
             
             restaurants.append(Restaurant(name=name, town=town, address=address, phone=phone, special_diets=special_diets, link = link))
-
             
         except:
             e = sys.exc_info()[0]
             print("Error when creating a restaurant: {0}".format(e))
     names = []
+    restaurantsNew = []
     for restaurant in restaurants:
         if restaurant.name  in names:
-            restaurants.remove(restaurant)
+            names = names
         else:
             names.append(restaurant.name)
-    Restaurant.objects.bulk_create(restaurants)
+            restaurantsNew.append(restaurant)
+    Restaurant.objects.bulk_create(restaurantsNew)
 
     for restaurantAux in restaurantsAux:
-        try:   
-            types = restaurantAux[4]
-            restaurantName = restaurantAux[0]
-            types = types.split(',')
-            restaurant_id = find_db_restaurant(restaurantName)[0][0]
-            for food_type in types:
-                name = food_type.strip()
-                categories.append(Category(name=name,restaurant_id = restaurant_id))       
-        except:
-            e = sys.exc_info()[0]
-            print("Error when creating a restaurant: {0}".format(e))
-    Category.objects.bulk_create(categories)        
+        types_food = restaurantAux[4]
+        types_food = types_food.split(',')
+        for type_food in types_food:
+            categories = Category.objects.filter()
+            for category in categories:
+                if type_food.strip() == category.name:
+                    Restaurant.objects.filter(name=restaurantAux[0])[0].categories.add(category)
+      
 
 def import_reviews_users():
     print('Indexing reviews... look at progress:')
@@ -234,13 +255,16 @@ def import_reviews_users():
             e = sys.exc_info()[0]
             print("Error when creating a review or user: {0}".format(e))
     names = []
+    usersnew = []
     for user in users:
         if user.name in names:
-            users.remove(user)
+            names = names
         else:
             names.append(user.name)
+            usersnew.append(user)
 
-    User.objects.bulk_create(users)
+
+    User.objects.bulk_create(usersnew)
    
     for line in aux:
         try:
@@ -250,9 +274,12 @@ def import_reviews_users():
             description = line[5]
             restaurant_name = line[6]
             user_name = line[0]
-            
-            restaurant_id = find_db_restaurant(restaurant_name)[0][0]
-            user_id = find_db_user(user_name)[0][0]
+            if user_name == "jcarazo":
+                st = "falla"
+            restaurant_id = Restaurant.objects.filter(name=restaurant_name)[0].id
+            print("Restaurante id" + str(restaurant_id))
+            user_id = User.objects.filter(name=user_name)[0].id
+            print("User id" + str(user_id))
     
             reviews.append(Review(user_id=user_id,restaurant_id=restaurant_id, rate=rate,visit_date=visit_date, title=title, description=description))
             
@@ -268,6 +295,33 @@ def import_reviews_restaurants():
     reviews = []
     restaurants = []
     categories = []
+
+    for line in aux:
+        try:   
+            types = line[4]
+            restaurantName = line[0]
+            types = types.split(',')
+            for food_type in types:
+                name = food_type.strip()
+                categories.append(Category(name=name)) 
+        
+        except:
+            e = sys.exc_info()[0]
+            print("Error when creating a categpory: {0}".format(e))
+    categoriesnew = []
+    names = []
+    categories = Category.objects.filter()
+    for category in categories:
+        names.append(category.name)
+
+    for category in categories:
+        if category.name  in names:
+            names = names
+        else:
+            names.append(category.name)
+            categoriesnew.append(category)
+    Category.objects.bulk_create(categoriesnew)  
+
     for line in aux:
         try:
             name = line[0]
@@ -284,26 +338,27 @@ def import_reviews_restaurants():
             e = sys.exc_info()[0]
             print("Error when creating a restaurant: {0}".format(e))
     names = []
+    restaurants = Restaurant.objects.filter()
     for restaurant in restaurants:
-        if restaurant.name in names:
-            restaurants.remove(restaurant)
+        names.append(restaurant.name)
+
+    restaurantsNew = []
+    for restaurant in restaurants:
+        if restaurant.name  in names:
+            names = names
         else:
             names.append(restaurant.name)
-    Restaurant.objects.bulk_create(restaurants)
+            restaurantsNew.append(restaurant)
+    Restaurant.objects.bulk_create(restaurantsNew)
 
     for line in aux:
-        try:   
-            types = line[4]
-            restaurantName = line[0]
-            types = types.split(',')
-            for food_type in types:
-                name = food_type.strip()
-                restaurant_id = find_db_restaurant(restaurantName)[0][0]
-                categories.append(Category(name=name,restaurant_id = restaurant_id))       
-        except:
-            e = sys.exc_info()[0]
-            print("Error when creating a category: {0}".format(e))
-    Category.objects.bulk_create(categories)
+        types_food = line[4]
+        types_food = types_food.split(',')
+        for type_food in types_food:
+            categories = Category.objects.filter()
+            for category in categories:
+                if type_food.strip() == category.name:
+                    Restaurant.objects.filter(name=line[0])[0].categories.add(category)
 
     for line in aux:
         try:
@@ -312,7 +367,7 @@ def import_reviews_restaurants():
             title = line[7]
             description = line[8]
             restaurant_name = line[0]
-            user_name = "djpacoverano"
+            user_name = line[11]
             
             restaurant_id = find_db_restaurant(restaurant_name)[0][0]
             user_id = find_db_user(user_name)[0][0]
