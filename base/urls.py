@@ -21,4 +21,5 @@ urlpatterns = [
     path('reviews', myapp_view.reviews),
     path('review', myapp_view.review_post),
     path('towns', myapp_view.towns),
+    path('loadRS', myapp_view.loadRS),
 ]

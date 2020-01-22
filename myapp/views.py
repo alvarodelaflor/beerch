@@ -7,9 +7,53 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from myapp.models import Restaurant, User, Review
 from django.db.models import Q
 from django.db.models import Count
+from myapp.recommendations import  transformPrefs, calculateSimilarItems, getRecommendations, getRecommendedItems, topMatches
 import urllib.parse
 import urllib.request
 import json
+import shelve
+
+
+# Funcion que carga en el diccionario Prefs todas las puntuaciones de usuarios a peliculas. Tambien carga el diccionario inverso y la matriz de similitud entre items
+# Serializa los resultados en dataRS.dat
+def loadDict():
+    Prefs={}   # matriz de usuarios y puntuaciones a cada a items
+    shelf = shelve.open("dataRS.dat")
+    reviews = Review.objects.all()
+    leng = len(reviews)
+    for review in reviews:
+        user = int(review.user.id)
+        itemid = int(review.restaurant.id)
+        rating = float(review.rate)
+        Prefs.setdefault(user, {})
+        Prefs[user][itemid] = rating
+    shelf['Prefs']=Prefs
+    shelf['ItemsPrefs']=transformPrefs(Prefs)
+    shelf['SimItems']=calculateSimilarItems(Prefs, n=10)
+    shelf.close()
+
+
+def loadRS(request):
+    loadDict()
+    return render(request,'index.html')
+
+
+def similarRestaurant(id):
+    id_restaurant = id
+
+    restaurant = Restaurant.objects.filter(id=id_restaurant)
+    shelf = shelve.open("dataRS.dat")
+    ItemsPrefs = shelf['ItemsPrefs']
+    shelf.close()
+    recommended = topMatches(ItemsPrefs, int(id_restaurant),n=3)
+    restaurant = []
+    similar = []
+    for re in recommended:
+        restaurant.append(Restaurant.objects.get(pk=re[1]))
+        similar.append(re[0])
+    items= zip(restaurant,similar)
+    aux = [restaurant, items]
+    return aux
 
 
 def index(request):
@@ -81,6 +125,9 @@ def restaurant_profile(request):
     id = request.POST.get('id', False)
     if id == False:
         id = request.GET.get('id', False)
+        similarRestaurant(id)
+    else:
+        similarRestaurant(id)
     restaurants =  Restaurant.objects.filter(id=id)
     if len(restaurants) > 0:
         restaurant = restaurants[0]
