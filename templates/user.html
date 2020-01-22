@@ -84,7 +84,7 @@
 													{% for i in reviews.paginator.page_range %}			
 														{% if reviews.number == i %}
 															<li><a href="#" class="page active">{{ i }}</a></li>
-														{% elif i > reviews.number|add:'-5' and i < reviews.number|add:'5' %}
+														{% elif i > reviews.number|add:'-2' and i < reviews.number|add:'2' %}
 															<li><a href="?page={{ i }}&id={{user.id}}" class="page">{{ i }}</a></li>
 														{% endif %}
 													{% endfor %}
