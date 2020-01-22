@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Beerch</title>
+		<meta charset="utf-8" />
+        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static 'login_true/css/main.css' %}" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="/" class="logo">
+										<strong>Beerch</strong>
+										WEBSITE										
+									</a>
+									<ul class="icons">
+										<li><a target="blank" href="https://github.com/alvar017" class="icon brands fa-github"><span class="label">GitHub Alvaro</span></a></li>
+										<li><a target="blank" href="https://github.com/antoniosp7" class="icon brands fa-github-alt"><span class="label">GitHub Antonio</span></a></li>
+									</ul>									
+								</header>
+
+							<!-- Banner -->
+								<section id="banner">
+									<div class="content">
+										<header>
+											<h1>Restaurantes Disponibles</h1>
+										</header>
+									</div>
+								</section>
+								<section>
+								<section id="search" class="alt">
+									<form method="post" action="restaurants_town">
+									{% csrf_token %}
+										{% if placeholder %}
+											<input id="town" name="town" type="hidden" value="{{ town }}">
+											<input type="text" name="nameRestaurant" id="nameRestaurant" placeholder="{{ placeholder }}" />
+										{% else %}
+											<input id="town" name="town" type="hidden" value="{{ town }}">										
+											<input type="text" name="nameRestaurant" id="nameRestaurant" placeholder="Filtra por nombre del restaurante" />
+										{% endif %}
+									</form>
+								</section>
+								<section>								
+									<div class="posts">
+										{% for restaurant in restaurants %}
+											<article>
+												{% if 'https:' in restaurant.id %}
+													<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
+												{% else %}
+													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
+												{% endif %}
+												<h3>{{restaurant.name}}</h3>
+												<p>{{restaurant.address}}</p>
+												<p>Tipos de comidas: {{restaurant.food_types}}</p>																																		
+												<form method="post" action="restaurant">
+												{% csrf_token %}
+													<input id="id" name="id" type="hidden" value={{ restaurant.id }}>
+													<button type="submit">Ver restaurante</button>
+												</form>
+											</article>
+										{% endfor %}
+									</div>
+								</section>
+								</section>
+									<ul class="pagination">
+										<!-- PREVIOUS BOTTON-->
+										{% if restaurants.has_previous %}
+											<li><a href="?page={{ restaurants.previous_page_number }}" class="button">Prev</a></li>
+										{% else %}
+											<li><span class="button disabled">Prev</span></li>
+										{% endif %}
+										<!-- PREVIOUS BOTTON-->
+
+										<!-- NAV BUTTON-->
+										{% for i in restaurants.paginator.page_range %}
+											{% if restaurants.number != i %}
+											<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
+											{% else %}
+											<li><a href="#" class="page active">{{ i }}</a></li>
+											{% endif %}
+										{% endfor %}
+										<!-- NAV BUTTON-->
+
+
+										<!-- NEXT BOTTON-->
+										{% if restaurants.has_next %}
+											<li><a href="?page={{ restaurants.next_page_number }}" class="button">Next</a></li>
+										{% else %}
+											<li><span class="button disabled">Next</span></li>
+										{% endif %}
+										<!-- NEXT BOTTON-->
+									</ul>
+								</section>									
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+							<!-- Search -->
+								<section id="search" class="alt">
+									<img src="/static/images/etsii_us.png" alt="" width="100%" height="100%"/>		
+								</section>
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>Menu</h2>
+									</header>
+									<ul>
+                                        <li>
+											<span class="opener">Ajustes</span>
+											<ul>
+                                                <li><a href="/logout">Iniciar sesión</a></li>
+												<li><a href="#">Cargar localidades</a></li>
+												<li><a href="/indexRestaurants">Cargar restaurantes</a></li>
+											</ul>
+										</li>
+										<li><a href="recommend">¡Recomiendame algo!</a></li>
+                                        <li><a href="towns">Ver localidades</a></li>
+                                        <li><a href="restaurants">Restaurantes disponibles</a></li>
+										<li><a href="reviews">Opiniones de usuarios</a></li>
+										<li><a href="users">Usuarios registrados</a></li>
+									</ul>															
+								</nav>
+		 				</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'login_true/js/jquery.min.js' %} "></script>
+			<script src="{% static 'login_true/js/browser.min.js' %} "></script>
+			<script src="{% static 'login_true/js/breakpoints.min.js' %} "></script>
+			<script src="{% static 'login_true/js/util.js' %} "></script>
+			<script src="{% static 'login_true/js/main.js' %} "></script>
+
+	</body>
+</html>

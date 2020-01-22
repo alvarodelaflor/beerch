@@ -47,8 +47,13 @@ def restaurants(request):
 
 def restaurants_town(request):    
     data = request.POST.get('town', False)
+    town = data
+    nameRestaurant = request.POST.get('nameRestaurant', False)
     if data:
-        restaurant_list = Restaurant.objects.filter(town=data)
+        if nameRestaurant:
+            restaurant_list = Restaurant.objects.filter(Q(town=data) & Q(name__icontains=nameRestaurant))
+        else:
+            restaurant_list = Restaurant.objects.filter(town=data)
     else:
         restaurant_list = Restaurant.objects.all()
     page = request.GET.get('page', 1)
@@ -62,10 +67,13 @@ def restaurants_town(request):
         restaurants = paginator.page(paginator.num_pages)
 
     if data != '':
-        placeholder = data    
+        if nameRestaurant:
+            placeholder = 'Restaurante con el nombre ' + str(nameRestaurant) + ' en ' + str(town)    
+        else:
+            placeholder = 'Restaurantes' + ' en ' + str(town)    
     else:
         placeholder = 'Filtra por nombre del restaurante'
-    return render(request, 'restaurants.html', { 'restaurants': restaurants, 'placeholder': placeholder })
+    return render(request, 'restaurants_town.html', { 'town': town, 'restaurants': restaurants, 'placeholder': placeholder })
 
 def restaurant_profile(request):
     id = request.POST.get('id', False)
