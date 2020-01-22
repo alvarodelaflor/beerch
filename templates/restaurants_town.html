@@ -81,16 +81,28 @@
 										{% endif %}
 										<!-- PREVIOUS BOTTON-->
 
-										<!-- NAV BUTTON-->
-										{% for i in restaurants.paginator.page_range %}
-											{% if restaurants.number != i %}
-											<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
-											{% else %}
-											<li><a href="#" class="page active">{{ i }}</a></li>
+										<!-- PUNTOS SUSPENSIVOS -->
+											{% if restaurants.number|add:'-4' > 1 %}
+												<li><a href="?page=1">Primera</a></li>
+											{% endif %}
+										<!-- PUNTOS SUSPENSIVOS -->
+
+
+										<!-- NAV BUTTON-->							
+										{% for i in restaurants.paginator.page_range %}			
+											{% if restaurants.number == i %}
+												<li><a href="#" class="page active">{{ i }}</a></li>
+    										{% elif i > restaurants.number|add:'-5' and i < restaurants.number|add:'5' %}
+												<li><a href="?page={{ i }}" class="page">{{ i }}</a></li>
 											{% endif %}
 										{% endfor %}
 										<!-- NAV BUTTON-->
 
+										<!-- PUNTOS SUSPENSIVOS -->
+											{% if restaurants.number|add:'4' > 1 and restaurants.has_next %}
+												<li><a href="?page={{ restaurants.number|add:'-5' }}">Última</a></li>
+											{% endif %}
+										<!-- PUNTOS SUSPENSIVOS -->
 
 										<!-- NEXT BOTTON-->
 										{% if restaurants.has_next %}
