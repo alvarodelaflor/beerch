@@ -14,7 +14,8 @@ def get_beautifulsoup(url):
 
 def find_url_restaurant():
     res = []
-    url = "https://www.tripadvisor.es/Restaurants-g660262-Alcala_de_Guadaira_Province_of_Seville_Andalucia.html"
+    #url = "https://www.tripadvisor.es/Restaurants-g660262-Alcala_de_Guadaira_Province_of_Seville_Andalucia.html"
+    url  = "https://www.tripadvisor.es/Restaurants-g1728814-Mairena_del_Alcor_Province_of_Seville_Andalucia.html"
     soupList = get_beautifulsoup(url)
     restaurants = soupList.findAll("a",{"class":"restaurants-list-ListCell__restaurantName--2aSdo"})
     for restaurant in restaurants:
@@ -58,7 +59,7 @@ def find_url_restaurant():
                 index = heads.index(head)
                 food_types = content[index].text
         aux = [name, town, address, phone, food_types, special_diets,urlReview]
-        if len(res) < 1:
+        if len(res) < 15:
             res.append(aux)
     return res
 
