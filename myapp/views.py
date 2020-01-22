@@ -51,9 +51,9 @@ def similarRestaurant(id):
     for re in recommended:
         restaurant.append(Restaurant.objects.get(pk=re[1]))
         similar.append(re[0])
-    items= zip(restaurant,similar)
-    aux = [restaurant, items]
-    return aux
+#    items= zip(restaurant,similar)
+#    aux = [restaurant, items]
+    return restaurant
 
 
 def index(request):
@@ -125,9 +125,9 @@ def restaurant_profile(request):
     id = request.POST.get('id', False)
     if id == False:
         id = request.GET.get('id', False)
-        similarRestaurant(id)
+        similar = similarRestaurant(id)
     else:
-        similarRestaurant(id)
+        similar = similarRestaurant(id)
     restaurants =  Restaurant.objects.filter(id=id)
     if len(restaurants) > 0:
         restaurant = restaurants[0]
@@ -145,7 +145,7 @@ def restaurant_profile(request):
     else:
         user = None
         reviews = []
-    return render(request, 'restaurant.html', { 'restaurant': restaurant, 'reviews': reviews})     
+    return render(request, 'restaurant.html', { 'restaurant': restaurant, 'reviews': reviews, 'similar': similar})     
 
 
 def users(request):

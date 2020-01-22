@@ -135,7 +135,30 @@
 										{% endif %}
 										<!-- NEXT BOTTON-->
 									</ul>						
-								</section>													
+								<header class="major">
+									<h2>Restaurantes similares</h2>
+								</header>
+								<section>								
+									<div class="posts">
+										{% for restaurant in similar %}
+											<article>
+												{% if 'https:' in restaurant.id %}
+													<a href="#" class="image"><img src="images/pic01.jpg" alt="" width="100%" height="100%"/></a>
+												{% else %}
+													<a href="#" class="image"><img src="/static/images/no_photo_restaurant.png" alt="" width="100%" height="100%"/></a>
+												{% endif %}
+												<h3>{{restaurant.name}}</h3>
+												<p>{{restaurant.address}}</p>
+												<p>Tipos de comidas: {{restaurant.food_types}}</p>																																		
+												<form method="post" action="restaurant">
+												{% csrf_token %}
+													<input id="id" name="id" type="hidden" value={{ restaurant.id }}>
+													<button type="submit">Ver restaurante</button>
+												</form>
+											</article>
+										{% endfor %}								
+									</div>																											
+								</section>	
 						</section>
 				</div>
 			</div>
